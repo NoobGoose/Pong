@@ -52,6 +52,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
+
+	/* 
+	case WM_CREATE:
+		SetTimer(hwnd, 1, 16, NULL);
+		break; 
+	*/
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -73,6 +80,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		}
 		graphics->EndDraw();
+
+	/*
+	case WM_TIMER:
+		InvalidateRect(hwnd, NULL, FALSE);
+		break;
+	*/
+
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
