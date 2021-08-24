@@ -55,6 +55,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_PAINT:
+		graphics->BeginDraw();
+		graphics->ClearScreen(0.f, 0.0f, 0.5f);
+		//Spam circles
+		for (int i = 0; i < 1000; i++)
+		{
+			graphics->DrawCircle(
+				rand() % 1280,
+				rand() % 720,
+				rand() % 100,
+				(rand() % 100) / 100.0f,
+				(rand() % 100) / 100.0f,
+				(rand() % 100) / 100.0f,
+				(rand() % 100) / 100.0f
+			);
+
+		}
+		graphics->EndDraw();
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}

@@ -4,6 +4,7 @@ Graphics::Graphics()
 {
 	factory = NULL;
 	renderTarget = NULL;
+	brush = NULL;
 }
 
 Graphics::~Graphics()
@@ -12,6 +13,8 @@ Graphics::~Graphics()
 		factory->Release();
 	if (renderTarget) 
 		renderTarget->Release();
+	if (brush)
+		brush->Release();
 }
 
 bool Graphics::Init(HWND windowHandle)
@@ -30,5 +33,20 @@ bool Graphics::Init(HWND windowHandle)
 
 	if (res != S_OK)
 		return false;
+
+	res = renderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0, 0), &brush);
+
+	if (res != S_OK)
+		return false;
+
 	return true;
+}
+
+void Graphics::ClearScreen(float r, float g, float b) {
+	renderTarget->Clear(D2D1::ColorF(r, g, b));
+}
+void Graphics::DrawCircle(float x, float y, float radius, float r, float g, float b, float a) {
+
+	brush->SetColor(D2D1::ColorF(r, g, b, a));
+	renderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), brush, 3.0f);
 }
