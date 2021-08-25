@@ -30,7 +30,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	graphics = new Graphics();
 
-	if (!graphics->Init(windowHandle)) {
+	if (!graphics->Init(windowHandle)) 
+	{
 		delete graphics;
 		return -1;
 	}
@@ -38,12 +39,46 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(windowHandle, nShowCmd);
 
+	float y = 0.0;
+	float ySpeed = 0.0;
+
+	MSG message;
+	message.message = NULL;
+
+	while (message.message != WM_QUIT)
+	{
+		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
+			DispatchMessage(&message);
+		else
+		{
+			ySpeed += 1.0f;
+			y += ySpeed;
+
+			if (y > 600)
+			{
+				y = 600;
+				ySpeed = -30.0f;
+			}
+
+
+			graphics->BeginDraw();
+			graphics->ClearScreen(0.0f, 0.0f, 0.5f);
+			graphics->DrawCircle(
+				375.0f, y, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f
+			);
+			graphics->EndDraw();
+
+		}
+	}
+
+	/*
 	MSG message;
 	while (GetMessage(&message, NULL, NULL, NULL) > 0) {
 		DispatchMessage(&message);
 	}
 	
 	delete graphics;
+	*/
 
 	return 0;
 }
@@ -53,7 +88,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 
-	/* 
+	 /*
 	case WM_CREATE:
 		SetTimer(hwnd, 1, 16, NULL);
 		break; 
@@ -62,7 +97,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	case WM_PAINT:
+
+	/* case WM_PAINT:
 		graphics->BeginDraw();
 		graphics->ClearScreen(0.f, 0.0f, 0.5f);
 		//Spam circles
@@ -81,7 +117,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		graphics->EndDraw();
 
-	/*
 	case WM_TIMER:
 		InvalidateRect(hwnd, NULL, FALSE);
 		break;

@@ -15,10 +15,12 @@ public:
 
 	bool Init(HWND windowHandle);
 
-	void BeginDraw() {
+	void BeginDraw() 
+	{
 		renderTarget->BeginDraw();
 	}
-	void EndDraw() {
+	void EndDraw() 
+	{
 		renderTarget->EndDraw();
 	}
 
