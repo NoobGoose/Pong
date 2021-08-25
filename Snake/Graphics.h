@@ -26,4 +26,5 @@ public:
 
 	void ClearScreen(float r, float g, float b);
 	void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
+	void FillCircle(float x, float y, float radius, float r, float g, float b, float a);
 };

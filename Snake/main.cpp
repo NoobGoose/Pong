@@ -1,6 +1,9 @@
 #include <Windows.h>
 #include "Graphics.h"
 
+#include "Level1.h"
+#include "GameController.h"
+
 Graphics* graphics;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -39,6 +42,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(windowHandle, nShowCmd);
 
+	GameController::LoadInitialLevel(new Level1());
+
 	float y = 0.0;
 	float ySpeed = 0.0;
 
@@ -51,23 +56,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&message);
 		else
 		{
-			ySpeed += 1.0f;
-			y += ySpeed;
-
-			if (y > 600)
-			{
-				y = 600;
-				ySpeed = -30.0f;
-			}
-
+			GameController::Update();
 
 			graphics->BeginDraw();
-			graphics->ClearScreen(0.0f, 0.0f, 0.5f);
-			graphics->DrawCircle(
-				375.0f, y, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f
-			);
+			GameController::Render(graphics);
 			graphics->EndDraw();
-
 		}
 	}
 
