@@ -14,6 +14,6 @@ public:
 	static void LoadInitialLevel(GameLevel* lev);
 	static void SwitchLevel(GameLevel* lev);
 
-	static void Render(Graphics* gfx);
+	static void Render();
 	static void Update();
 };

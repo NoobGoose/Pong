@@ -27,11 +27,11 @@ void GameController::SwitchLevel(GameLevel* lev)
 	Loading = false;
 }
 
-void GameController::Render(Graphics* gfx)
+void GameController::Render()
 {
 	if (Loading)
 		return;
-	currentLevel->Render(gfx);
+	currentLevel->Render();
 }
 
 void GameController::Update()

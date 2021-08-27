@@ -11,7 +11,7 @@ void Level1::Unload()
 {
 
 }
-void Level1::Render(Graphics* gfx)
+void Level1::Render()
 {
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
 	gfx->DrawCircle(

@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
