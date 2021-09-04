@@ -1,15 +1,17 @@
-#include "Level1.h"
-#include "Graphics.h"
 #include "GameController.h"
+#include "Graphics.h"
+#include "Level1.h"
 
 void Level1::Load()
 {
 	y = 0.0f;
 	ySpeed = 0.0f;
+
+	sprites = new SpriteSheet(L"test.png", gfx);
 }
 void Level1::Unload()
 {
-
+	delete sprites;
 }
 void Level1::Render()
 {
@@ -17,6 +19,8 @@ void Level1::Render()
 	gfx->DrawCircle(
 		375.0f, y, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f
 	);
+
+	sprites->Draw();
 }
 void Level1::Update()
 {
