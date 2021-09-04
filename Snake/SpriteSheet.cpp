@@ -44,7 +44,6 @@ SpriteSheet::SpriteSheet(const wchar_t* filename, Graphics* gfx)
 	);
 
 	//Create D2D1Bitmap
-	ID2D1Bitmap* bmp;
 	gfx->GetRenderTarget()->CreateBitmapFromWicBitmap(
 		wicConverter,
 		NULL,
@@ -73,7 +72,7 @@ void SpriteSheet::Draw()
 		bmp,
 		D2D1::RectF(
 		0.0f, 0.0f, bmp->GetSize().width, bmp->GetSize().height),
-		1.0f,
+		0.5f,  //Opacity
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 		D2D1::RectF(0.0f, 0.0f,
 		bmp->GetSize().width, bmp->GetSize().height)
