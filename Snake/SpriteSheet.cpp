@@ -58,8 +58,19 @@ SpriteSheet::SpriteSheet(const wchar_t* filename, Graphics* gfx)
 		wicConverter->Release();
 	if (wicFrame)
 		wicFrame->Release();
+
+	spriteWidth = bmp->GetSize().width;
+	spriteHeight = bmp->GetSize().height;
+	spritesAccross = 1;
 }
 
+SpriteSheet::SpriteSheet(const wchar_t* filename, Graphics* gfx, int spriteWidth, int spriteHeight):
+SpriteSheet(filename, gfx)
+{
+	this->spriteHeight = spriteHeight;
+	this->spriteWidth = spriteWidth;
+	this->spritesAccross = (int)bmp->GetSize().width / spriteWidth;
+}
 SpriteSheet::~SpriteSheet()
 {
 	if (bmp)
@@ -73,7 +84,7 @@ void SpriteSheet::Draw()
 		bmp,
 		D2D1::RectF(
 		0.0f, 0.0f, bmp->GetSize().width, bmp->GetSize().height),
-		0.5f,  //Opacity
+		1.0f,  //Opacity
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 		D2D1::RectF(0.0f, 0.0f,
 		bmp->GetSize().width, bmp->GetSize().height)

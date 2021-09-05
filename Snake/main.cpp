@@ -20,7 +20,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	RegisterClassEx(&windowClass);
 
-	RECT rect = { 0, 0, 1280, 720 };
+	RECT rect = { 0, 0, 800, 600 };
 	AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
 
 	HWND windowHandle = CreateWindowEx(
@@ -98,8 +98,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		for (int i = 0; i < 1000; i++)
 		{
 			graphics->DrawCircle(
-				rand() % 1280,
-				rand() % 720,
+				rand() % 800,
+				rand() % 600,
 				rand() % 100,
 				(rand() % 100) / 100.0f,
 				(rand() % 100) / 100.0f,

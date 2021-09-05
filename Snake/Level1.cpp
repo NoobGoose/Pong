@@ -7,7 +7,7 @@ void Level1::Load()
 	y = 0.0f;
 	ySpeed = 0.0f;
 
-	sprites = new SpriteSheet(L"test.png", gfx);
+	sprites = new SpriteSheet(L"SpriteSheet.png", gfx);
 }
 void Level1::Unload()
 {

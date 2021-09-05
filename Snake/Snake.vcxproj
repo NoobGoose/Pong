@@ -156,9 +156,7 @@
     <ClInclude Include="SpriteSheet.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="test.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </Image>
+    <Image Include="SpriteSheet.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
