@@ -7,7 +7,9 @@ void Level1::Load()
 	y = 0.0f;
 	ySpeed = 0.0f;
 
-	sprites = new SpriteSheet(L"SpriteSheet.png", gfx);
+	sprites = new SpriteSheet(L"SpriteSheet.png", gfx, 64, 64);
+
+	frame = 0;
 }
 void Level1::Unload()
 {
@@ -20,7 +22,7 @@ void Level1::Render()
 		375.0f, y, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f
 	);
 
-	sprites->Draw();
+	sprites->Draw((frame)/10 % 4, 100, 100);
 }
 void Level1::Update()
 {
@@ -32,4 +34,6 @@ void Level1::Update()
 		y = 600;
 		ySpeed = -30.0f;
 	}
+
+	frame++;
 }

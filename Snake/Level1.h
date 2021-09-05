@@ -9,6 +9,8 @@ class Level1 : public GameLevel
 
 	SpriteSheet* sprites;
 
+	int frame;
+
 public:
 	void Load() override;
 	void Unload() override;
