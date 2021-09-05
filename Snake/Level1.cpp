@@ -4,36 +4,28 @@
 
 void Level1::Load()
 {
-	y = 0.0f;
-	ySpeed = 0.0f;
-
 	sprites = new SpriteSheet(L"SpriteSheet.png", gfx, 64, 64);
 
 	frame = 0;
+
+	xPosition = 0.0f;
 }
 void Level1::Unload()
 {
 	delete sprites;
 }
+
+void Level1::Update(double timeTotal, double timeDelta)
+{
+	xPosition += 20.0f * timeDelta;
+	if (xPosition > 800)
+		xPosition -= 800.0f;
+
+	frame++;
+}
+
 void Level1::Render()
 {
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
-	gfx->DrawCircle(
-		375.0f, y, 50.0f, 1.0f, 1.0f, 1.0f, 1.0f
-	);
-
-	sprites->Draw((frame)/10 % 4, 100, 100);
-}
-void Level1::Update()
-{
-	ySpeed += 1.0f;
-	y += ySpeed;
-
-	if (y > 600)
-	{
-		y = 600;
-		ySpeed = -30.0f;
-	}
-
-	frame++;
+	sprites->Draw((frame/10) % 4, xPosition, 100);
 }

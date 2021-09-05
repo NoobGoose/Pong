@@ -19,5 +19,5 @@ public:
 	~SpriteSheet();
 
 	void Draw();
-	void Draw(int index, int x, int y);
+	void Draw(int index, float x, float y);
 };

@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, false, WS_EX_OVERLAPPEDWINDOW);
 
 	HWND windowHandle = CreateWindowEx(
-		WS_EX_OVERLAPPEDWINDOW,"MainWindow", "Snake", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL
+		WS_EX_OVERLAPPEDWINDOW,"MainWindow", "Arcadia", WS_OVERLAPPEDWINDOW, 100, 100, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, NULL
 	);
 
 	if (!windowHandle)
@@ -42,6 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ShowWindow(windowHandle, nShowCmd);
 
+	GameController::Init();
 	GameController::LoadInitialLevel(new Level1());
 
 	float y = 0.0;
@@ -57,7 +58,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		else
 		{
 			GameController::Update();
-
 			graphics->BeginDraw();
 			GameController::Render();
 			graphics->EndDraw();

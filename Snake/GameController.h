@@ -1,11 +1,16 @@
 #pragma once
 
 #include "GameLevel.h"
+#include "HPTimer.h"
 
 class GameController
 {
 	GameController() {}
+
 	static GameLevel* currentLevel;
+
+	static HPTimer* hpTimer;
+
 public:
 	static bool Loading;
 

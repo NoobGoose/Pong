@@ -2,23 +2,28 @@
 
 GameLevel* GameController::currentLevel;
 bool GameController::Loading;
+HPTimer* GameController::hpTimer;
 
 void GameController::Init()
 {
 	Loading = true;
 	currentLevel = 0;
+	hpTimer = new HPTimer();
 }
 
 void GameController::LoadInitialLevel(GameLevel* lev)
 {
+	Loading = true;
 	lev->Loading = true;
 	currentLevel = lev;
 	currentLevel->Load();
 	lev->Loading = false;
+	Loading = false;
 }
 
 void GameController::SwitchLevel(GameLevel* lev)
 {
+	Loading = true;
 	lev->Loading = true;
 	currentLevel->Unload();
 	lev->Load();
@@ -36,5 +41,8 @@ void GameController::Render()
 
 void GameController::Update()
 {
-	currentLevel->Update();
+	if (Loading)
+		return;
+	hpTimer->Update();
+	currentLevel->Update(hpTimer->GetTimeTotal(), hpTimer->GetTimeDelta());
 }

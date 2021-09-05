@@ -91,7 +91,7 @@ void SpriteSheet::Draw()
 	);
 }
 
-void SpriteSheet::Draw(int index, int x, int y)
+void SpriteSheet::Draw(int index, float x, float y)
 {
 	D2D_RECT_F src = D2D1::RectF(
 		(float)((index % spritesAccross) * spriteWidth),
@@ -108,7 +108,7 @@ void SpriteSheet::Draw(int index, int x, int y)
 		bmp,
 		dest,
 		1.0f,  //Opacity
-		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		src
 	);
 }
