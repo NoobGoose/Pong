@@ -5,8 +5,8 @@
 void Pong::Load()
 {
 	frame = 0;
-	ballSpeed = 10.0;
-	measure = ((rand() % 50) + 1);
+	ballSpeed = 500.0;
+	measure = 35.0;
 	prevxPosition = 500.0;
 	prevyPosition = 500.0;
 	xPosition = 500.0;
@@ -19,7 +19,7 @@ void Pong::Unload()
 
 void Pong::Update(double timeTotal, double timeDelta)
 {
-
+	getNewPos();
 }
 
 void Pong::Render()
@@ -46,15 +46,20 @@ void Pong::Render()
 // TODO: Handler for corrners
 int Pong::getNewPos()
 {
+
 	// Case +
 	if (positiveX)
 	{
+		OutputDebugStringW(L"PosX\n");
+
 		double tempnewxPos = xPosition +
 			sqrt((pow(ballSpeed, 2.0) / (1 + pow(measure, 2.0))));
 		double tempnewyPos = ((tempnewxPos - xPosition) / measure) + yPosition;
 
 		if (tempnewxPos >= 800)
 		{
+			OutputDebugStringW(L"PosX > 800\n");
+
 			//Perpendicular lines
 			double xDelta = 800 - xPosition;
 			double yDelta = xDelta * measure;
@@ -68,11 +73,16 @@ int Pong::getNewPos()
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
+			
+			measure = 1 / measure;
+			positiveX = false;
 
 			return 0;
 		}
 		if (tempnewyPos <= 0 || tempnewyPos >= 600)
 		{
+			OutputDebugStringW(L"PosX > 800, Y\n");
+
 			double yDelta = ((yPosition) * (xPosition < 300)) + ((600 - xPosition) * (xPosition > 300)); //We are no longer Yandev
 			double xDelta = yDelta / measure;
 			double wallX = xPosition + xDelta;
@@ -85,6 +95,8 @@ int Pong::getNewPos()
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
+
+			measure = 1 / measure;
 
 			return 0;
 		}
@@ -102,6 +114,64 @@ int Pong::getNewPos()
 	// Case -
 	else
 	{
+		OutputDebugStringW(L"NotPosX\n");
+
+		double tempnewxPos = xPosition -
+			sqrt((pow(ballSpeed, 2.0) / (1 + pow(measure, 2.0))));
+		double tempnewyPos = ((tempnewxPos - xPosition) / measure) + yPosition;
+
+		if (tempnewxPos <= 0)
+		{
+			OutputDebugStringW(L"PosX < 0\n");
+
+			//Perpendicular lines
+			double xDelta = xPosition;
+			double yDelta = xDelta * measure;
+			double wallX = xPosition + xDelta;
+			double wallY = yPosition + yDelta;
+			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+
+			double tempnewxPos = wallX +
+				sqrt((pow(ballSpeed, 2.0) / (1 + pow(measure, 2.0))));
+			double tempnewyPos = ((tempnewxPos - wallX) / measure) + wallY;
+
+			xPosition = tempnewxPos;
+			yPosition = tempnewyPos;
+
+			measure = 1 / measure;
+			positiveX = true;
+
+			return 0;
+		}
+		if (tempnewyPos <= 0 || tempnewyPos >= 600)
+		{
+			OutputDebugStringW(L"PosX < 0, Y\n");
+
+			double yDelta = ((yPosition) * (xPosition < 300)) + ((600 - xPosition) * (xPosition > 300)); //We are no longer Yandev
+			double xDelta = yDelta / measure;
+			double wallX = xPosition + xDelta;
+			double wallY = yPosition + yDelta;
+			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
+
+			double tempnewxPos = wallX +
+				sqrt((pow(ballSpeed, 2.0) / (1 + pow(-measure, 2.0))));
+			double tempnewyPos = ((tempnewxPos - wallX) / -measure) + wallY;
+
+			xPosition = tempnewxPos;
+			yPosition = tempnewyPos;
+
+			measure = -1 / measure;
+
+			return 0;
+		}
+
+		else
+		{
+			xPosition = tempnewxPos;
+			yPosition = tempnewyPos;
+
+			return 0;
+		}
 	}
 	
 };
