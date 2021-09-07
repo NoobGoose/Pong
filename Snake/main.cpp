@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "Graphics.h"
-#include "Level1.h"
+#include "Pong.h"
 #include "GameController.h"
 
 Graphics* graphics;
@@ -43,7 +43,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(windowHandle, nShowCmd);
 
 	GameController::Init();
-	GameController::LoadInitialLevel(new Level1());
+	// GameController::LoadInitialLevel(new Level1());
+	GameController::LoadInitialLevel(new Pong());
 
 	float y = 0.0;
 	float ySpeed = 0.0;

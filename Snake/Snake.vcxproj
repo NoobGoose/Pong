@@ -147,6 +147,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pong.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="HPTimer.h" />
     <ClInclude Include="Level1.h" />
+    <ClInclude Include="Pong.h" />
     <ClInclude Include="SpriteSheet.h" />
   </ItemGroup>
   <ItemGroup>

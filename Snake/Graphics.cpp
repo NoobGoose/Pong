@@ -57,3 +57,10 @@ void Graphics::FillCircle(float x, float y, float radius, float r, float g, floa
 	brush->SetColor(D2D1::ColorF(r, g, b, a));
 	renderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), brush);
 }
+
+void Graphics::FillRect(float x, float y, float length, float width, float r, float g, float b, float a)
+{
+	brush->SetColor(D2D1::ColorF(r, g, b, a));
+	D2D1_RECT_F rect = D2D1::RectF(x, y, x + length, y + width);
+	renderTarget->FillRectangle(rect, brush);
+}
