@@ -6,7 +6,6 @@
 class Pong : public GameLevel
 {
 	double measure;
-	double prevxPosition, prevyPosition;
 	double xPosition, yPosition;
 	double newxPosition, newyPosition;
 	double ballSpeed;

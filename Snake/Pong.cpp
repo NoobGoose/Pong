@@ -7,8 +7,6 @@ void Pong::Load()
 	frame = 0;
 	ballSpeed = 500.0;
 	measure = 35.0;
-	prevxPosition = 500.0;
-	prevyPosition = 500.0;
 	xPosition = 500.0;
 	yPosition = 500.0;
 	positiveX = true;
@@ -46,7 +44,6 @@ void Pong::Render()
 // TODO: Handler for corrners
 int Pong::getNewPos()
 {
-
 	// Case +
 	if (positiveX)
 	{
@@ -68,14 +65,14 @@ int Pong::getNewPos()
 			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
 
 			double tempnewxPos = wallX +
-				sqrt((pow(ballSpeed, 2.0) / (1 + pow(-measure, 2.0))));
+				sqrt((pow(ballSpeed - totalDelta, 2.0) / (1 + pow(-measure, 2.0))));
 			double tempnewyPos = ((tempnewxPos - wallX) / -measure) + wallY;
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
 			
-			measure = 1 / measure;
-			positiveX = false;
+			measure = -1.0 / measure;
+			positiveX = !positiveX;
 
 			return 0;
 		}
@@ -90,13 +87,13 @@ int Pong::getNewPos()
 			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
 
 			double tempnewxPos = wallX +
-				sqrt((pow(ballSpeed, 2.0) / (1 + pow(-measure, 2.0))));
+				sqrt((pow(ballSpeed - totalDelta, 2.0) / (1 + pow(-measure, 2.0))));
 			double tempnewyPos = ((tempnewxPos - wallX) / -measure) + wallY;
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
 
-			measure = 1 / measure;
+			measure = -1.0 / measure;
 
 			return 0;
 		}
@@ -132,14 +129,14 @@ int Pong::getNewPos()
 			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
 
 			double tempnewxPos = wallX +
-				sqrt((pow(ballSpeed, 2.0) / (1 + pow(measure, 2.0))));
+				sqrt((pow(ballSpeed - totalDelta, 2.0) / (1 + pow(measure, 2.0))));
 			double tempnewyPos = ((tempnewxPos - wallX) / measure) + wallY;
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
 
-			measure = 1 / measure;
-			positiveX = true;
+			measure = -1.0 / measure;
+			positiveX = !positiveX;
 
 			return 0;
 		}
@@ -154,13 +151,13 @@ int Pong::getNewPos()
 			double totalDelta = sqrt(pow(xDelta, 2) + pow(yDelta, 2));
 
 			double tempnewxPos = wallX +
-				sqrt((pow(ballSpeed, 2.0) / (1 + pow(-measure, 2.0))));
+				sqrt((pow(ballSpeed - totalDelta, 2.0) / (1 + pow(-measure, 2.0))));
 			double tempnewyPos = ((tempnewxPos - wallX) / -measure) + wallY;
 
 			xPosition = tempnewxPos;
 			yPosition = tempnewyPos;
 
-			measure = -1 / measure;
+			measure = -1.0 / measure;
 
 			return 0;
 		}
