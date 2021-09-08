@@ -25,6 +25,16 @@ double getRadiansPi()
 	}
 }
 
+bool outofbounds(int arg1, int arg2)
+{
+	if (arg1 <= 0 || arg1 >= 800 || arg2 <= 0 || arg2 >= 600)
+		return true;
+	else
+	{
+		return false;
+	}
+}
+
 void Pong::Load()
 {
 	frame = 0;
@@ -32,6 +42,9 @@ void Pong::Load()
 	xPosition = 500.0;
 	yPosition = 500.0;
 	radiansPi = getRadiansPi();
+
+
+	getWall();
 }
 void Pong::Unload()
 {
@@ -42,125 +55,50 @@ void Pong::Update(double timeTotal, double timeDelta)
 	// Ball physics
 	// TODO: Handler for corrners
 	{
-		double xDelta;
-		double yDelta;
-		double tempX;
-		double tempY;
-		double measure;
-
-		switch ((int) (radiansPi * 2))
-		{
-		case 0:
-
-			measure = -tan(radiansPi * M_PI);
-
-			xDelta = 800 - xPosition;
-			yDelta = xDelta * measure;
-			tempX = xPosition + xDelta;
-			tempY = yPosition + yDelta;
-			wallX = tempX;
-			wallY = tempY;
-
-			if (tempY <= 0)
-			{
-				wallY = 0;
-				wallX = tempX + (tempY / measure);
-			}
-
-			if (tempY >= 600)
-			{
-				wallY = 600;
-				wallX = tempX - (tempY / measure);
-			}
-
-			break;
-
-		case 1:
-
-			measure = tan(radiansPi * M_PI);
-
-			xDelta = xPosition;
-			yDelta = xDelta * measure;
-			tempX = xPosition - xDelta;
-			tempY = yPosition + yDelta;
-			wallX = tempX;
-			wallY = tempY;
-
-			if (tempY <= 0)
-			{
-				wallY = 0;
-				wallX = tempX + (tempY / measure);
-			}
-
-			if (tempY >= 600)
-			{
-				wallY = 600;
-				wallX = tempX - (tempY / measure);
-			}
-			break;
-
-		case 2:
-
-			measure = tan(radiansPi * M_PI);
-
-			xDelta = xPosition;
-			yDelta = xDelta * measure;
-			tempX = xPosition + xDelta;
-			tempY = yPosition + yDelta;
-			wallX = tempX;
-			wallY = tempY;
-
-			if (tempY <= 0)
-			{
-				wallY = 0;
-				wallX = tempX + (tempY / measure);
-			}
-
-			if (tempY >= 600)
-			{
-				wallY = 600;
-				wallX = tempX - (tempY / measure);
-			}
-
-			break;
-
-		case 3:
-
-			measure = tan(radiansPi * M_PI);
-
-			xDelta = 800 - xPosition;
-			yDelta = xDelta * measure;
-			tempX = xPosition + xDelta;
-			tempY = yPosition - yDelta;
-			wallX = tempX;
-			wallY = tempY;
-
-			if (tempY <= 0)
-			{
-				wallY = 0;
-				wallX = tempX + (tempY / measure);
-			}
-
-			if (tempY >= 600)
-			{
-				wallY = 600;
-				wallX = tempX - (tempY / measure);
-			}
-
-			break;
-
-		default:
-			break;
-		}
-
+	
 		long double delta = sqrt(
 			(pow((wallX - xPosition), 2) + 
 			(pow((wallY - yPosition), 2))));
 		long double distanceRatio = (ballSpeed * timeDelta) / delta;
-		xPosition = ((xPosition * (1 - distanceRatio)) + (wallX * (distanceRatio)));
-		yPosition = ((yPosition * (1 - distanceRatio)) + (wallY * (distanceRatio)));
+		double newXPosition = ((xPosition * (1 - distanceRatio)) + (wallX * (distanceRatio)));
+		double newYPosition = ((yPosition * (1 - distanceRatio)) + (wallY * (distanceRatio)));
 
-		if ()
+		if (outofbounds(newXPosition, newYPosition))
+		{
+			{
+				double tempY = (-1 / (tan(radiansPi)) * (-100 - xPosition) + yPosition);
+				distanceRatio = (ballSpeed * timeDelta) / delta;
+				double tempnewXPosition = ((xPosition * (1 - distanceRatio)) + (-100 * (distanceRatio)));
+				double tempnewYPosition = ((yPosition * (1 - distanceRatio)) + (tempY * (distanceRatio)));
+
+				if (!(outofbounds(tempnewXPosition, tempnewYPosition)))
+				{
+					OutputDebugString("Case1\n");
+
+					wallX = tempnewXPosition;
+					wallY = tempnewYPosition;
+					
+				}
+				else
+				{
+					OutputDebugString("Case2\n");
+
+					distanceRatio = (-ballSpeed * timeDelta) / delta;
+					double tempnewXPosition = ((xPosition * (1 - distanceRatio)) + (-100 * (distanceRatio)));
+					double tempnewYPosition = ((yPosition * (1 - distanceRatio)) + (tempY * (distanceRatio)));
+
+					wallX = tempnewXPosition;
+					wallY = tempnewYPosition;
+				}
+			}
+
+
+		}
+		else
+		{
+			xPosition = newXPosition;
+			yPosition = newYPosition;
+		}
 	}
 }
 
@@ -182,4 +120,118 @@ void Pong::Render()
 	}
 
 	gfx->FillCircle(xPosition, yPosition, 10, 1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Pong::getWall()
+{
+	double xDelta;
+	double yDelta;
+	double tempX;
+	double tempY;
+	double measure;
+
+	switch ((int)(radiansPi * 2))
+	{
+	case 0:
+
+		measure = -tan(radiansPi * M_PI);
+
+		xDelta = 800 - xPosition;
+		yDelta = xDelta * measure;
+		tempX = xPosition + xDelta;
+		tempY = yPosition + yDelta;
+		wallX = tempX;
+		wallY = tempY;
+
+		if (tempY <= 0)
+		{
+			wallY = 0;
+			wallX = tempX + (tempY / measure);
+		}
+
+		if (tempY >= 600)
+		{
+			wallY = 600;
+			wallX = tempX - (tempY / measure);
+		}
+
+		break;
+
+	case 1:
+
+		measure = tan(radiansPi * M_PI);
+
+		xDelta = xPosition;
+		yDelta = xDelta * measure;
+		tempX = xPosition - xDelta;
+		tempY = yPosition + yDelta;
+		wallX = tempX;
+		wallY = tempY;
+
+		if (tempY <= 0)
+		{
+			wallY = 0;
+			wallX = tempX + (tempY / measure);
+		}
+
+		if (tempY >= 600)
+		{
+			wallY = 600;
+			wallX = tempX - (tempY / measure);
+		}
+		break;
+
+	case 2:
+
+		measure = tan(radiansPi * M_PI);
+
+		xDelta = xPosition;
+		yDelta = xDelta * measure;
+		tempX = xPosition + xDelta;
+		tempY = yPosition + yDelta;
+		wallX = tempX;
+		wallY = tempY;
+
+		if (tempY <= 0)
+		{
+			wallY = 0;
+			wallX = tempX + (tempY / measure);
+		}
+
+		if (tempY >= 600)
+		{
+			wallY = 600;
+			wallX = tempX - (tempY / measure);
+		}
+
+		break;
+
+	case 3:
+
+		measure = tan(radiansPi * M_PI);
+
+		xDelta = 800 - xPosition;
+		yDelta = xDelta * measure;
+		tempX = xPosition + xDelta;
+		tempY = yPosition - yDelta;
+		wallX = tempX;
+		wallY = tempY;
+
+		if (tempY <= 0)
+		{
+			wallY = 0;
+			wallX = tempX + (tempY / measure);
+		}
+
+		if (tempY >= 600)
+		{
+			wallY = 600;
+			wallX = tempX - (tempY / measure);
+		}
+
+		break;
+
+	default:
+		break;
+	}
 }

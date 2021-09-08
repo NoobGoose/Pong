@@ -20,6 +20,6 @@ public:
 	void Unload() override;
 	void Render() override;
 	void Update(double timeTotal, double timeDelta) override;
-	int getNewPos();
+	void getWall();
 
 };
