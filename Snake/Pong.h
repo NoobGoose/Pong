@@ -8,18 +8,19 @@
 
 class Pong : public GameLevel
 {
-	double radiansPi;
-	double xPosition, yPosition;
-	double wallX, wallY;
-	double ballSpeed;
-	int frame;
+	bool towardsWall;
+	float ballVelocity;
+	float playerX, playerY;
+	float ballX, ballY;
 
 public:
 
 	void Load() override;
 	void Unload() override;
 	void Render() override;
-	void Update(double timeTotal, double timeDelta) override;
-	void getWall();
+	void Update(double timeDelta) override;
+	void Update(double timeDelta, WPARAM wParam) override;
+
+	boolean Xcollision();
 
 };

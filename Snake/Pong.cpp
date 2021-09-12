@@ -2,236 +2,79 @@
 #include "Graphics.h"
 #include "Pong.h"
 
-double getRadiansPi()
-{
-	srand(time(NULL));
-	int toreturn = (rand() % 200);
-	switch (toreturn)
-	{
-	case 50:
-		getRadiansPi();
-		break;
-	case 100:
-		getRadiansPi();
-		break;
-	case 150:
-		getRadiansPi();
-		break;
-	case 200:
-		getRadiansPi();
-		break;
-	default:
-		return (double) toreturn / 100;
-	}
-}
-
-bool outofbounds(int arg1, int arg2)
-{
-	if (arg1 <= 0 || arg1 >= 800 || arg2 <= 0 || arg2 >= 600)
-		return true;
-	else
-	{
-		return false;
-	}
-}
-
 void Pong::Load()
 {
-	frame = 0;
-	ballSpeed = 100.0;
-	xPosition = 500.0;
-	yPosition = 500.0;
-	radiansPi = getRadiansPi();
-
-
-	getWall();
+	towardsWall = false;
+	ballVelocity = 30;
+	playerX = 10;
+	playerY = 10;
+	ballX = 500;
+	ballY = 500;
 }
 void Pong::Unload()
 {
 }
 
-void Pong::Update(double timeTotal, double timeDelta)
+void Pong::Update(double timeDelta)
 {
-	// Ball physics
-	// TODO: Handler for corrners
+	if (playerY < 0)
+		++playerY;
+
+	else if (playerY > 600 - 75)
+		--playerY;
+
+	ballX = ballX + (towardsWall * timeDelta * 100) - (!towardsWall * timeDelta * 100);
+	ballY = ballY + (towardsWall * timeDelta * ballVelocity) - (!towardsWall * timeDelta * ballVelocity);
+
+
+	if (ballX <= 15 || ballX > 795)
+		if (Xcollision())
+		{
+			ballVelocity = -1 / ballVelocity;
+			towardsWall = !towardsWall;
+		}
+
+		if (ballY < 5 || ballY > 795)
+			ballVelocity = -1 / ballVelocity;
+}
+
+boolean Pong::Xcollision()
+{
+	if (ballX <= 15 && ballY > playerY && ballY < playerY + 75)
+		return true;
+	else if (ballX > 795)
+		return true;
+	return false;
+}
+
+void Pong::Update(double timeDelta, WPARAM wParam)
+{
+	switch (wParam)
 	{
-	
-		long double delta = sqrt(
-			(pow((wallX - xPosition), 2) + 
-			(pow((wallY - yPosition), 2))));
-		long double distanceRatio = (ballSpeed * timeDelta) / delta;
-		double newXPosition = ((xPosition * (1 - distanceRatio)) + (wallX * (distanceRatio)));
-		double newYPosition = ((yPosition * (1 - distanceRatio)) + (wallY * (distanceRatio)));
-
-		if (outofbounds(newXPosition, newYPosition))
-		{
-			{
-				double tempY = (-1 / (tan(radiansPi)) * (-100 - xPosition) + yPosition);
-				distanceRatio = (ballSpeed * timeDelta) / delta;
-				double tempnewXPosition = ((xPosition * (1 - distanceRatio)) + (-100 * (distanceRatio)));
-				double tempnewYPosition = ((yPosition * (1 - distanceRatio)) + (tempY * (distanceRatio)));
-
-				if (!(outofbounds(tempnewXPosition, tempnewYPosition)))
-				{
-					OutputDebugString("Case1\n");
-
-					wallX = tempnewXPosition;
-					wallY = tempnewYPosition;
-					
-				}
-				else
-				{
-					OutputDebugString("Case2\n");
-
-					distanceRatio = (-ballSpeed * timeDelta) / delta;
-					double tempnewXPosition = ((xPosition * (1 - distanceRatio)) + (-100 * (distanceRatio)));
-					double tempnewYPosition = ((yPosition * (1 - distanceRatio)) + (tempY * (distanceRatio)));
-
-					wallX = tempnewXPosition;
-					wallY = tempnewYPosition;
-				}
-			}
-
-
-		}
-		else
-		{
-			xPosition = newXPosition;
-			yPosition = newYPosition;
-		}
+	case VK_UP:
+			playerY -= 5;
+		break;
+	case VK_DOWN:
+			playerY += 5;
+		break;
+	default:
+		break;
 	}
+
+	Update(timeDelta);
 }
 
 void Pong::Render()
 {
 	gfx->ClearScreen(0.0f, 0.0f, 0.0f);
-	//Renders Static Objects
+
+	for (unsigned int ypos = 0; ypos < 600; ypos = ypos + 15)
 	{
-		gfx->FillRect(395, 5, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 65, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 125, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 185, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 245, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 305, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 365, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 425, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 485, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
-		gfx->FillRect(395, 545, 10, 50, 1.0f, 1.0f, 1.0f, 1.0f);
+		gfx->FillRect(399, ypos, 2, 10, 1.0f, 1.0f, 1.0f, 1.0f);
+
 	}
 
-	gfx->FillCircle(xPosition, yPosition, 10, 1.0f, 1.0f, 1.0f, 1.0f);
-}
+	gfx->FillRect(playerX, playerY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
 
-void Pong::getWall()
-{
-	double xDelta;
-	double yDelta;
-	double tempX;
-	double tempY;
-	double measure;
-
-	switch ((int)(radiansPi * 2))
-	{
-	case 0:
-
-		measure = -tan(radiansPi * M_PI);
-
-		xDelta = 800 - xPosition;
-		yDelta = xDelta * measure;
-		tempX = xPosition + xDelta;
-		tempY = yPosition + yDelta;
-		wallX = tempX;
-		wallY = tempY;
-
-		if (tempY <= 0)
-		{
-			wallY = 0;
-			wallX = tempX + (tempY / measure);
-		}
-
-		if (tempY >= 600)
-		{
-			wallY = 600;
-			wallX = tempX - (tempY / measure);
-		}
-
-		break;
-
-	case 1:
-
-		measure = tan(radiansPi * M_PI);
-
-		xDelta = xPosition;
-		yDelta = xDelta * measure;
-		tempX = xPosition - xDelta;
-		tempY = yPosition + yDelta;
-		wallX = tempX;
-		wallY = tempY;
-
-		if (tempY <= 0)
-		{
-			wallY = 0;
-			wallX = tempX + (tempY / measure);
-		}
-
-		if (tempY >= 600)
-		{
-			wallY = 600;
-			wallX = tempX - (tempY / measure);
-		}
-		break;
-
-	case 2:
-
-		measure = tan(radiansPi * M_PI);
-
-		xDelta = xPosition;
-		yDelta = xDelta * measure;
-		tempX = xPosition + xDelta;
-		tempY = yPosition + yDelta;
-		wallX = tempX;
-		wallY = tempY;
-
-		if (tempY <= 0)
-		{
-			wallY = 0;
-			wallX = tempX + (tempY / measure);
-		}
-
-		if (tempY >= 600)
-		{
-			wallY = 600;
-			wallX = tempX - (tempY / measure);
-		}
-
-		break;
-
-	case 3:
-
-		measure = tan(radiansPi * M_PI);
-
-		xDelta = 800 - xPosition;
-		yDelta = xDelta * measure;
-		tempX = xPosition + xDelta;
-		tempY = yPosition - yDelta;
-		wallX = tempX;
-		wallY = tempY;
-
-		if (tempY <= 0)
-		{
-			wallY = 0;
-			wallX = tempX + (tempY / measure);
-		}
-
-		if (tempY >= 600)
-		{
-			wallY = 600;
-			wallX = tempX - (tempY / measure);
-		}
-
-		break;
-
-	default:
-		break;
-	}
+	gfx->FillCircle(ballX, ballY, 5, 1.0f, 1.0f, 1.0f, 1.0f);
 }

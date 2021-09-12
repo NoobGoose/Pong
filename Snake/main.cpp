@@ -88,6 +88,22 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break; 
 	*/
 
+	case WM_KEYDOWN:
+
+		switch (wParam)
+		{
+		case VK_UP:
+			GameController::Update(VK_UP);
+			break;
+		case VK_DOWN:
+			GameController::Update(VK_DOWN);
+			break;
+		default:
+			break;
+		}
+
+		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

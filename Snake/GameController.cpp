@@ -44,5 +44,13 @@ void GameController::Update()
 	if (Loading)
 		return;
 	hpTimer->Update();
-	currentLevel->Update(hpTimer->GetTimeTotal(), hpTimer->GetTimeDelta());
+	currentLevel->Update(hpTimer->GetTimeDelta());
+}
+
+void GameController::Update(WPARAM wParam)
+{
+	if (Loading)
+		return;
+	hpTimer->Update();
+	currentLevel->Update(hpTimer->GetTimeDelta(), wParam);
 }

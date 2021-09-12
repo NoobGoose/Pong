@@ -21,4 +21,5 @@ public:
 
 	static void Render();
 	static void Update();
+	static void Update(WPARAM wParam);
 };

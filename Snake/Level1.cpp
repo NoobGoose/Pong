@@ -15,7 +15,7 @@ void Level1::Unload()
 	delete sprites;
 }
 
-void Level1::Update(double timeTotal, double timeDelta)
+void Level1::Update(double timeDelta)
 {
 	xPosition += 20.0f * timeDelta;
 	if (xPosition > 800)
