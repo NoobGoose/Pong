@@ -11,6 +11,7 @@ class Pong : public GameLevel
 	bool towardsWall;
 	float ballVelocity;
 	float playerX, playerY;
+	float botX, botY;
 	float ballX, ballY;
 
 public:
@@ -21,6 +22,6 @@ public:
 	void Update(double timeDelta) override;
 	void Update(double timeDelta, WPARAM wParam) override;
 
-	boolean Xcollision();
+	boolean Xcollision(float tmpballX, float tmpballY);
 
 };

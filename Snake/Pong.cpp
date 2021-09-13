@@ -5,7 +5,7 @@
 void Pong::Load()
 {
 	towardsWall = false;
-	ballVelocity = 30;
+	ballVelocity = -1;
 	playerX = 10;
 	playerY = 10;
 	ballX = 500;
@@ -23,26 +23,43 @@ void Pong::Update(double timeDelta)
 	else if (playerY > 600 - 75)
 		--playerY;
 
-	ballX = ballX + (towardsWall * timeDelta * 100) - (!towardsWall * timeDelta * 100);
-	ballY = ballY + (towardsWall * timeDelta * ballVelocity) - (!towardsWall * timeDelta * ballVelocity);
+	float tmpballX = (towardsWall * timeDelta * 100) - (!towardsWall * timeDelta * 100);
+	float tmpballY = tmpballX * ballVelocity;
 
 
-	if (ballX <= 15 || ballX > 795)
-		if (Xcollision())
+	if (ballX + tmpballX <= 20 || ballX + tmpballX >= 790)
+	{
+		OutputDebugString("X Wall\n");
+
+		if (Xcollision(ballX + tmpballX, ballY + tmpballY))
 		{
+			OutputDebugString("Player Wall\n");
+
 			ballVelocity = -1 / ballVelocity;
 			towardsWall = !towardsWall;
 		}
+	}
 
-		if (ballY < 5 || ballY > 795)
-			ballVelocity = -1 / ballVelocity;
+	char msgbuff[100];
+	sprintf_s(msgbuff, "Ball Y is %lf\n", ballY);
+	OutputDebugString(msgbuff);
+	if (ballY + tmpballY < 5 || ballY + tmpballY > 590)
+	{
+		OutputDebugString("Y Wall\n");
+		ballVelocity = -1 / ballVelocity;
+	}
+	else
+	{
+		ballX += tmpballX;
+		ballY += tmpballY;
+	}
 }
 
-boolean Pong::Xcollision()
+boolean Pong::Xcollision(float tmpballX, float tmpballY)
 {
-	if (ballX <= 15 && ballY > playerY && ballY < playerY + 75)
+	if (tmpballY > playerY && ballY < playerY + 75)
 		return true;
-	else if (ballX > 795)
+	if (tmpballX >= 790)
 		return true;
 	return false;
 }
