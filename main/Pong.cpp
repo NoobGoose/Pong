@@ -30,7 +30,7 @@ void Pong::Update(double timeDelta)
 	float tmpballY = tmpballX * ballVelocity;
 
 
-	if (ballX + tmpballX <= 20 || ballX + tmpballX >= 785)
+	if ((ballX + tmpballX <= 20 && ballX + tmpballX >= 10)|| (ballX + tmpballX >= 785 && ballX + tmpballX <= 795))
 	{
 
 		if (Xcollision(ballX + tmpballX, ballY + tmpballY))
