@@ -8,8 +8,11 @@ void Pong::Load()
 	ballVelocity = -1;
 	playerX = 10;
 	playerY = 10;
+	botX = 790;
+	botY = 10;
 	ballX = 500;
 	ballY = 500;
+	botSpeed = 5;
 }
 void Pong::Unload()
 {
@@ -27,25 +30,19 @@ void Pong::Update(double timeDelta)
 	float tmpballY = tmpballX * ballVelocity;
 
 
-	if (ballX + tmpballX <= 20 || ballX + tmpballX >= 790)
+	if (ballX + tmpballX <= 20 || ballX + tmpballX >= 785)
 	{
-		OutputDebugString("X Wall\n");
 
 		if (Xcollision(ballX + tmpballX, ballY + tmpballY))
 		{
-			OutputDebugString("Player Wall\n");
-
 			ballVelocity = -1 / ballVelocity;
 			towardsWall = !towardsWall;
 		}
 	}
 
-	char msgbuff[100];
-	sprintf_s(msgbuff, "Ball Y is %lf\n", ballY);
-	OutputDebugString(msgbuff);
+
 	if (ballY + tmpballY < 5 || ballY + tmpballY > 590)
 	{
-		OutputDebugString("Y Wall\n");
 		ballVelocity = -1 / ballVelocity;
 	}
 	else
@@ -53,13 +50,25 @@ void Pong::Update(double timeDelta)
 		ballX += tmpballX;
 		ballY += tmpballY;
 	}
+
+	if (ballY > botY + 37.5)
+	{
+		botY += botSpeed;
+	}
+	if (ballY < botY + 37.5)
+	{
+		botY -= botSpeed;
+	}
+
+	if (botSpeed > 1)
+		botSpeed = botSpeed * 0.9999;
 }
 
 boolean Pong::Xcollision(float tmpballX, float tmpballY)
 {
 	if (tmpballY > playerY && ballY < playerY + 75)
 		return true;
-	if (tmpballX >= 790)
+	if (ballX + tmpballX >= 780 && tmpballY > botY && ballY < botY + 75)
 		return true;
 	return false;
 }
@@ -92,6 +101,7 @@ void Pong::Render()
 	}
 
 	gfx->FillRect(playerX, playerY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
+	gfx->FillRect(botX, botY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	gfx->FillCircle(ballX, ballY, 5, 1.0f, 1.0f, 1.0f, 1.0f);
 }
