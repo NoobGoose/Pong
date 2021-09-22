@@ -2,7 +2,7 @@
 
 #include "GameLevel.h"
 
-class Pong : public GameLevel
+class Snake : public GameLevel
 {
 	bool towardsWall;
 	float ballVelocity;

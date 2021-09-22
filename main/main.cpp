@@ -3,7 +3,13 @@
 #include "Pong.h"
 #include "GameController.h"
 
+constexpr auto PONG = 1;
+
 Graphics* graphics;
+
+HMENU hMenu;
+
+void AddMenus(HWND);
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -44,7 +50,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	GameController::Init();
 	// GameController::LoadInitialLevel(new Level1());
-	GameController::LoadInitialLevel(new Pong());
+	// GameController::LoadInitialLevel(new Pong());
 
 	float y = 0.0;
 	float ySpeed = 0.0;
@@ -82,11 +88,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 
-	 /*
 	case WM_CREATE:
-		SetTimer(hwnd, 1, 16, NULL);
+		AddMenus(hwnd);
 		break; 
-	*/
+
+	case WM_COMMAND:
+		switch (wParam)
+		{
+		case PONG:
+			GameController::SwitchLevel(new Pong());
+			break;
+		default:
+			break;
+		}
+		break;
 
 	case WM_KEYDOWN:
 
@@ -135,4 +150,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
+}
+
+// Menu
+
+void AddMenus(HWND hWnd)
+{
+	hMenu = CreateMenu();
+	HMENU Pong = CreateMenu();
+
+	AppendMenu(hMenu, MF_STRING, PONG, "Pong");
+
+	SetMenu(hWnd, hMenu);
 }
