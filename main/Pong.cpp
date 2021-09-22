@@ -14,6 +14,9 @@ void Pong::Load()
 	ballY = 500;
 	botSpeed = 2;
 	ballSpeed = 100;
+
+	player1Score = 0;
+	player2Score = 0;
 }
 void Pong::Unload()
 {
@@ -57,9 +60,26 @@ void Pong::Update(double timeDelta)
 		botY -= botSpeed;
 	}
 
-	ballSpeed = ballSpeed * 1.0001;
-	botSpeed = botSpeed + 0.0001;
+	ballSpeed = ballSpeed * 1.001;
+	botSpeed = botSpeed + 0.001;
 
+
+	if (ballX < 0)
+	{
+		player2Score++;
+		ballX = 600 + ((player2Score * 100) % 200);
+		ballY = 500;
+		ballSpeed = 100;
+		botSpeed = 2;
+	}
+
+	if (ballX > 800)
+	{
+		player1Score++;
+		ballX = 400 - ((player1Score * 100) % 200);
+		ballY = 500;
+		ballSpeed = 100;
+	}
 }
 
 boolean Pong::Xcollision(float tmpballX, float tmpballY)
@@ -78,10 +98,10 @@ void Pong::Update(double timeDelta, WPARAM wParam)
 	switch (wParam)
 	{
 	case VK_UP:
-			playerY -= 5;
+			playerY -= 10;
 		break;
 	case VK_DOWN:
-			playerY += 5;
+			playerY += 10;
 		break;
 	default:
 		break;
@@ -103,7 +123,10 @@ void Pong::Render()
 	gfx->FillRect(playerX, playerY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
 	gfx->FillRect(botX, botY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
 
-	gfx->renderCharacters(100, 100, 1.0f, 1.0f, 1.0f, 1.0f, L"Hello World", 1);
+	gfx->renderCharacters(318, 10, 1.0f, 1.0f, 1.0f, 1.0f, std::to_wstring(player1Score), 2);
+
+	gfx->renderCharacters(418, 10, 1.0f, 1.0f, 1.0f, 1.0f, std::to_wstring(player2Score), 2);
+
 
 	gfx->FillCircle(ballX, ballY, 5, 1.0f, 1.0f, 1.0f, 1.0f);
 }

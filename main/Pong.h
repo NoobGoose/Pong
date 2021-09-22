@@ -16,6 +16,9 @@ class Pong : public GameLevel
 	float ballSpeed;
 	float ballX, ballY;
 
+	unsigned int player1Score;
+	unsigned int player2Score;
+
 public:
 
 	void Load() override;

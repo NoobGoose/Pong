@@ -49,20 +49,56 @@ bool Graphics::Init(HWND windowHandle)
 		reinterpret_cast<IUnknown**>(&DWriteFactory)
 	);
 
+	//Size 128
+
 	res = DWriteFactory->CreateTextFormat(
-		L"Verdana",
+		L"SourceSerifPro",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
 		128,
-		L"", //locale
+		L"en-us", //locale
 		&textFormat128
 	);
 
 		textFormat128->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 
 		textFormat128->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+
+	//Size 64
+
+		res = DWriteFactory->CreateTextFormat(
+			L"SourceSerifPro",
+			NULL,
+			DWRITE_FONT_WEIGHT_NORMAL,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			64,
+			L"en-us", //locale
+			&textFormat64
+		);
+
+		textFormat64->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+
+		textFormat64->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+
+	//Size 32
+
+		res = DWriteFactory->CreateTextFormat(
+			L"SourceSerifPro",
+			NULL,
+			DWRITE_FONT_WEIGHT_NORMAL,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			32,
+			L"en-us", //locale
+			&textFormat32
+		);
+
+		textFormat32->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+
+		textFormat32->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
 	return true;
 }
@@ -76,19 +112,43 @@ void Graphics::renderCharacters(float x, float y, float r, float g, float b, flo
 
 	D2D1_SIZE_F renderTargetSize = renderTarget->GetSize();
 
-	renderTarget->BeginDraw();
-
 	renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
-	renderTarget->DrawText(
-		textArg.data(),
-		textArg.length(),
-		textFormat128,
-		D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height),
-		brush
-	);
 
-	renderTarget->EndDraw();
+	switch (mode)
+	{
+	case 1:
+		renderTarget->DrawText(
+			textArg.data(),
+			textArg.length(),
+			textFormat32,
+			D2D1::RectF(x, y, x + (32 * textArg.length()), y + 32),
+			brush
+		);
+		break;
+	case 2:
+		renderTarget->DrawText(
+			textArg.data(),
+			textArg.length(),
+			textFormat64,
+			D2D1::RectF(x, y, x + (64 * textArg.length()), y + 64),
+			brush
+		);
+		break;
+	case 3:
+		renderTarget->DrawText(
+			textArg.data(),
+			textArg.length(),
+			textFormat128,
+			D2D1::RectF(x, y, x + (128 * textArg.length()), y + 128),
+			brush
+		);
+	default:
+		break;
+	}
+
+
+
 }
 void Graphics::ClearScreen(float r, float g, float b) 
 {

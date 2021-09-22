@@ -12,7 +12,6 @@ class Graphics
 	ID2D1HwndRenderTarget* renderTarget;
 	ID2D1SolidColorBrush* brush;
 
-	IDWriteTextFormat* textFormat16;
 	IDWriteTextFormat* textFormat32;
 	IDWriteTextFormat* textFormat64;
 	IDWriteTextFormat* textFormat128;
