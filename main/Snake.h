@@ -4,16 +4,10 @@
 
 class Snake : public GameLevel
 {
-	bool towardsWall;
-	float ballVelocity;
-	float playerX, playerY;
-	float botX, botY;
-	float botSpeed;
-	float ballSpeed;
-	float ballX, ballY;
-
-	unsigned int player1Score;
-	unsigned int player2Score;
+	char fourValueBool;
+	int playerX, playerY;
+	int appleX, appleY;
+	int matrix[30][40];
 
 public:
 
@@ -22,7 +16,5 @@ public:
 	void Render() override;
 	void Update(double timeDelta) override;
 	void Update(double timeDelta, WPARAM wParam) override;
-
-	boolean Xcollision(float tmpballX, float tmpballY);
 
 };

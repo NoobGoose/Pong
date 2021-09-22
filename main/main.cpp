@@ -1,3 +1,4 @@
+
 #include <Windows.h>
 #include "Graphics.h"
 #include "Pong.h"
@@ -51,6 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GameController::Init();
 	// GameController::LoadInitialLevel(new Level1());
 	// GameController::LoadInitialLevel(new Pong());
+	GameController::LoadInitialLevel(new Snake();)
 
 	float y = 0.0;
 	float ySpeed = 0.0;
