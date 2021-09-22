@@ -13,6 +13,7 @@ class Pong : public GameLevel
 	float playerX, playerY;
 	float botX, botY;
 	float botSpeed;
+	float ballSpeed;
 	float ballX, ballY;
 
 public:

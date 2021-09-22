@@ -4,7 +4,7 @@
 
 void Pong::Load()
 {
-	towardsWall = false;
+	towardsWall = true;
 	ballVelocity = -1;
 	playerX = 10;
 	playerY = 10;
@@ -12,7 +12,8 @@ void Pong::Load()
 	botY = 10;
 	ballX = 500;
 	ballY = 500;
-	botSpeed = 5;
+	botSpeed = 2;
+	ballSpeed = 100;
 }
 void Pong::Unload()
 {
@@ -26,20 +27,16 @@ void Pong::Update(double timeDelta)
 	else if (playerY > 600 - 75)
 		--playerY;
 
-	float tmpballX = (towardsWall * timeDelta * 100) - (!towardsWall * timeDelta * 100);
+	float tmpballX = (towardsWall * timeDelta * ballSpeed) - (!towardsWall * timeDelta * ballSpeed);
 	float tmpballY = tmpballX * ballVelocity;
 
 
-	if ((ballX + tmpballX <= 20 && ballX + tmpballX >= 10)|| (ballX + tmpballX >= 785 && ballX + tmpballX <= 795))
+
+	if (Xcollision(ballX + tmpballX, ballY + tmpballY)) //Took a hour to find that I passed the sum of the delta AND the coords
 	{
-
-		if (Xcollision(ballX + tmpballX, ballY + tmpballY))
-		{
-			ballVelocity = -1 / ballVelocity;
-			towardsWall = !towardsWall;
-		}
+		ballVelocity = -1 / ballVelocity;
+		towardsWall = !towardsWall;
 	}
-
 
 	if (ballY + tmpballY < 5 || ballY + tmpballY > 590)
 	{
@@ -51,25 +48,28 @@ void Pong::Update(double timeDelta)
 		ballY += tmpballY;
 	}
 
-	if (ballY > botY + 37.5)
+	if (ballY > botY + 50 && botY + 75 < 600)
 	{
 		botY += botSpeed;
 	}
-	if (ballY < botY + 37.5)
+	if (ballY < botY + 25 && botY > 0)
 	{
 		botY -= botSpeed;
 	}
 
-	if (botSpeed > 1)
-		botSpeed = botSpeed * 0.9999;
+	ballSpeed = ballSpeed * 1.0001;
+	botSpeed = botSpeed + 0.0001;
+
 }
 
 boolean Pong::Xcollision(float tmpballX, float tmpballY)
 {
-	if (tmpballY > playerY && ballY < playerY + 75)
+	if (tmpballX <= 17.5 && tmpballX >= 0 && tmpballY > playerY &&tmpballY < playerY + 75)
 		return true;
-	if (ballX + tmpballX >= 780 && tmpballY > botY && ballY < botY + 75)
+
+	if (tmpballX >= 785 && tmpballX <= 800 && tmpballY > botY && tmpballY < botY + 75)
 		return true;
+
 	return false;
 }
 
@@ -102,6 +102,8 @@ void Pong::Render()
 
 	gfx->FillRect(playerX, playerY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
 	gfx->FillRect(botX, botY, 5, 75, 1.0f, 1.0f, 1.0f, 1.0f);
+
+	gfx->renderCharacters(100, 100, 1.0f, 1.0f, 1.0f, 1.0f, L"Hello World", 1);
 
 	gfx->FillCircle(ballX, ballY, 5, 1.0f, 1.0f, 1.0f, 1.0f);
 }

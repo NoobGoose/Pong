@@ -1,8 +1,10 @@
 #include "Graphics.h"
+#include "comdef.h"
 
 Graphics::Graphics()
 {
-	factory = NULL;
+	factory = NULL; 
+	DWriteFactory = NULL;
 	renderTarget = NULL;
 	brush = NULL;
 }
@@ -20,6 +22,7 @@ Graphics::~Graphics()
 bool Graphics::Init(HWND windowHandle)
 {
 	HRESULT res = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
+
 	if (res != S_OK) 
 		return false;
 
@@ -39,9 +42,54 @@ bool Graphics::Init(HWND windowHandle)
 	if (res != S_OK)
 		return false;
 
+	//Direct Write
+	res = DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(DWriteFactory),
+		reinterpret_cast<IUnknown**>(&DWriteFactory)
+	);
+
+	res = DWriteFactory->CreateTextFormat(
+		L"Verdana",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		128,
+		L"", //locale
+		&textFormat128
+	);
+
+		textFormat128->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+
+		textFormat128->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+
 	return true;
 }
 
+void Graphics::renderCharacters(float x, float y, float r, float g, float b, float a, std::wstring textArg, unsigned int mode)
+{
+
+	static const WCHAR sc_helloWorld[] = L"Hello, World!";
+
+	brush->SetColor(D2D1::ColorF(r, g, b, a));
+
+	D2D1_SIZE_F renderTargetSize = renderTarget->GetSize();
+
+	renderTarget->BeginDraw();
+
+	renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	renderTarget->DrawText(
+		textArg.data(),
+		textArg.length(),
+		textFormat128,
+		D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height),
+		brush
+	);
+
+	renderTarget->EndDraw();
+}
 void Graphics::ClearScreen(float r, float g, float b) 
 {
 	renderTarget->Clear(D2D1::ColorF(r, g, b));
