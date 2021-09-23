@@ -1,8 +1,8 @@
 #include "GameController.h"
 #include "Graphics.h"
-#include "Pong.h"
+#include "Pong2.h"
 
-void Pong::Load()
+void Pong2::Load()
 {
 	towardsWall = true;
 	ballVelocity = -1;
@@ -12,23 +12,28 @@ void Pong::Load()
 	botY = 10;
 	ballX = 500;
 	ballY = 500;
-	botSpeed = 2;
 	ballSpeed = 100;
 
 	player1Score = 0;
 	player2Score = 0;
 }
-void Pong::Unload()
+void Pong2::Unload()
 {
 }
 
-void Pong::Update(double timeDelta)
+void Pong2::Update(double timeDelta)
 {
 	if (playerY < 0)
 		++playerY;
 
 	else if (playerY > 600 - 75)
 		--playerY;
+
+	if (botY < 0)
+		++botY;
+
+	else if (botY > 600 - 75)
+		--botY;
 
 	float tmpballX = (towardsWall * timeDelta * ballSpeed) - (!towardsWall * timeDelta * ballSpeed);
 	float tmpballY = tmpballX * ballVelocity;
@@ -51,17 +56,7 @@ void Pong::Update(double timeDelta)
 		ballY += tmpballY;
 	}
 
-	if (ballY > botY + 50 && botY + 75 < 600)
-	{
-		botY += botSpeed;
-	}
-	if (ballY < botY + 25 && botY > 0)
-	{
-		botY -= botSpeed;
-	}
-
 	ballSpeed = ballSpeed * 1.001;
-	botSpeed = botSpeed + 0.001;
 
 
 	if (ballX < 0)
@@ -82,10 +77,9 @@ void Pong::Update(double timeDelta)
 	}
 }
 
-boolean Pong::Xcollision(float tmpballX, float tmpballY)
+boolean Pong2::Xcollision(float tmpballX, float tmpballY)
 {
-
-	if (tmpballX <= 17.5 && tmpballX >= 0 && tmpballY > playerY &&tmpballY < playerY + 75)
+	if (tmpballX <= 17.5 && tmpballX >= 0 && tmpballY > playerY && tmpballY < playerY + 75)
 		return true;
 
 	if (tmpballX >= 785 && tmpballX <= 800 && tmpballY > botY && tmpballY < botY + 75)
@@ -94,15 +88,21 @@ boolean Pong::Xcollision(float tmpballX, float tmpballY)
 	return false;
 }
 
-void Pong::Update(double timeDelta, WPARAM wParam)
+void Pong2::Update(double timeDelta, WPARAM wParam)
 {
 	switch (wParam)
 	{
 	case 0x57:
-			playerY -= 10;
+		playerY -= 10;
 		break;
 	case 0x53:
-			playerY += 10;
+		playerY += 10;
+		break;
+	case VK_UP:
+		botY -= 10;
+		break;
+	case VK_DOWN:
+		botY += 10;
 		break;
 	default:
 		break;
@@ -111,7 +111,7 @@ void Pong::Update(double timeDelta, WPARAM wParam)
 	Update(timeDelta);
 }
 
-void Pong::Render()
+void Pong2::Render()
 {
 	gfx->ClearScreen(0.0f, 0.0f, 0.0f);
 

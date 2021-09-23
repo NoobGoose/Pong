@@ -148,6 +148,7 @@
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pong.cpp" />
+    <ClCompile Include="Pong2.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
   </ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="GameController.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="Pong2.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="HPTimer.h" />
     <ClInclude Include="Level1.h" />
@@ -166,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="SourceSerifPro-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="synth-stab-uncut-freestyle-pluck.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

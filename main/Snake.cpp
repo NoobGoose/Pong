@@ -15,6 +15,11 @@ void Snake::Update(double timeDelta)
 
 }
 
+void Snake::Update(double timeDelta, WPARAM wParam)
+{
+	Update(timeDelta);
+}
+
 void Snake::Render()
 {
 	gfx->ClearScreen(1.0f, 1.0f, 1.0f);

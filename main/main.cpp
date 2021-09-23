@@ -1,10 +1,12 @@
-
 #include <Windows.h>
 #include "Graphics.h"
 #include "Pong.h"
+#include "Pong2.h"
+#include "Snake.h"
 #include "GameController.h"
 
 constexpr auto PONG = 1;
+constexpr auto PONG2 = 2;
 
 Graphics* graphics;
 
@@ -52,7 +54,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GameController::Init();
 	// GameController::LoadInitialLevel(new Level1());
 	// GameController::LoadInitialLevel(new Pong());
-	GameController::LoadInitialLevel(new Snake();)
+	GameController::LoadInitialLevel(new Snake());
 
 	float y = 0.0;
 	float ySpeed = 0.0;
@@ -100,6 +102,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case PONG:
 			GameController::SwitchLevel(new Pong());
 			break;
+		case PONG2:
+			GameController::SwitchLevel(new Pong2());
+			break;
 		default:
 			break;
 		}
@@ -109,6 +114,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		switch (wParam)
 		{
+		case 0x57:
+			GameController::Update(0x57);
+			break;
+		case 0x53:
+			GameController::Update(0x53);
+			break;
 		case VK_UP:
 			GameController::Update(VK_UP);
 			break;
@@ -159,9 +170,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 void AddMenus(HWND hWnd)
 {
 	hMenu = CreateMenu();
+	HMENU hPongMenu = CreateMenu();
+
 	HMENU Pong = CreateMenu();
 
-	AppendMenu(hMenu, MF_STRING, PONG, "Pong");
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hPongMenu, "Pong");
+
+	AppendMenu(hPongMenu, MF_STRING, PONG, "Single Player");
+	AppendMenu(hPongMenu, MF_STRING, PONG2, "Multi Player");
 
 	SetMenu(hWnd, hMenu);
 }
